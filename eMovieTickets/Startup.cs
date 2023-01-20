@@ -1,4 +1,5 @@
 using eMovieTickets.Data;
+using eMovieTickets.Data.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -29,7 +30,11 @@ namespace eMovieTickets
             services.AddDbContext<AppDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnectionString")));
 
+            //Service Configuration
+            services.AddScoped<IActorsServices, ActorsServices>();
+
             services.AddControllersWithViews();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
