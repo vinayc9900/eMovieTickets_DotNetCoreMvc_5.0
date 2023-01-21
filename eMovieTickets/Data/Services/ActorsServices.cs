@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace eMovieTickets.Data.Services
@@ -14,30 +15,40 @@ namespace eMovieTickets.Data.Services
         {
             _context = context;
         }
-        public void AddActor(Actor actor)
+        public async Task AddActorAsync(Actor actor)
         {
-            throw new System.NotImplementedException();
+          await _context.Actors.AddAsync(actor);
+          await  _context.SaveChangesAsync();
         }
 
-        public void DeleteActor(int id)
+        public async Task  DeleteActorAsync(int id)
         {
-            throw new System.NotImplementedException();
+            var deleteActor =await  _context.Actors.FirstOrDefaultAsync(x => x.Id == id);
+            
+            _context.Actors.Remove(deleteActor);
+            await _context.SaveChangesAsync();
+
         }
 
-        public Actor GetActorById(int id)
+        public async Task<Actor> GetActorByIdAsync(int id)
         {
-            throw new System.NotImplementedException();
+           
+                var actorDetails = await _context.Actors.FirstOrDefaultAsync(x=>x.Id==id);
+                return actorDetails;
+
         }
 
-        public async Task<IEnumerable<Actor>> GetActors()
+        public async Task<IEnumerable<Actor>> GetActorsAsync()
         {
             var result = await _context.Actors.ToListAsync();
             return result;
         }
 
-        public Actor UpdateActor(int id, Actor newActor)
+        public async Task<Actor> UpdateActorAsync(int id, Actor newActor)
         {
-            throw new System.NotImplementedException();
+            _context.Actors.Update(newActor);
+           await  _context.SaveChangesAsync();
+            return newActor;
         }
 
        
